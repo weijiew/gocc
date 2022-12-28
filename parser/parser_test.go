@@ -7,7 +7,6 @@ import (
 )
 
 func TestLetStatements(t *testing.T) {
-
 	input := `
 let x = 5;
 let y = 10;
@@ -15,6 +14,7 @@ let foodbar = 838383;
 `
 	l := lexer.New(input)
 	p := New(l)
+
 	program := p.ParseProgram()
 	// 判断是否存在错误，若存在则打印输出
 	checkParserErrors(t, p)
@@ -40,6 +40,36 @@ let foodbar = 838383;
 		stmt := program.Statements[i]
 		if !testLetStatement(t, stmt, tt.expectedIdentifier) {
 			return
+		}
+	}
+}
+
+func TestReturnStatements(t *testing.T) {
+	input := `
+return 5;
+return true;
+return 993 322;
+`
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statements. got=%d",
+			len(program.Statements))
+	}
+
+	for _, stmt := range program.Statements {
+		returnStmt, ok := stmt.(*ast.ReturnStatement)
+		if !ok {
+			t.Fatalf("stmt not *ast.returnStatement. got=%T", stmt)
+			continue
+		}
+		if returnStmt.TokenLiteral() != "return" {
+			t.Fatalf("returnStmt.TokenLiteral not 'return', got %q",
+				returnStmt.TokenLiteral())
 		}
 	}
 }

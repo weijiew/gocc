@@ -1,6 +1,8 @@
 package ast
 
-import "gocc/token"
+import (
+	"gocc/token"
+)
 
 // 每个节点都应当实现 TokenLiteral 方法
 // 方便调试，该方法用来打印 token 的字面值
@@ -52,3 +54,11 @@ type Identifier struct {
 func (i *Identifier) expressionNode()      {}
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
 func (i *Identifier) String() string       { return i.Value }
+
+type ReturnStatement struct {
+	Token       token.Token // the 'return' token
+	ReturnValue Expression
+}
+
+func (rs *ReturnStatement) statementNode()       {}
+func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }

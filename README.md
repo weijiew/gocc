@@ -32,3 +32,22 @@ readIdentifier --> isLetter
 readNumber --> isDigit
 ```
 
+```mermaid
+classDiagram
+
+Parser <|-- New
+Parser <|-- Errors
+Parser <|-- parseProgram
+Parser <|-- parseStatement
+Parser <|-- parseLet Statement
+Parser <|-- expectPeek
+Parser <|-- peekTokenIs
+
+New --> Parser: creates
+Errors --> Parser: returns
+parseProgram --> Parser: calls
+parse Statement --> Parser: calls
+parseLet Statement --> Parser: calls
+expectPeek --> Parser: calls
+peekTokenIs --> Parser: calls
+```
